@@ -1,4 +1,16 @@
-var gameid = '74eu';
+var fs = require('fs');
+
+var gameid = "asdf";
+
+fs.readFile("gameid.txt", {encoding: 'utf-8'}, function(err,data){
+    if (!err) {
+        gameid = data;
+    } else {
+        console.log(err);
+    }
+});
+
+//var gameid = 'h09u';
 
 var io = require('/usr/local/lib/node_modules/socket.io/node_modules/socket.io-client');
 
@@ -27,7 +39,9 @@ socket.on('connect', function() {
 
     // Join a custom game and force start immediately.
     // Custom games are a great way to test your bot while you develop it because you can play against your bot!
-    
+        
+    gameid = gameid.replace(/[\n\r]/g, '');
+
     var custom_game_id = gameid;
     socket.emit('join_private', custom_game_id, user_id);
     socket.emit('set_force_start', custom_game_id, true);
@@ -344,6 +358,10 @@ socket.on('game_update', function(data) {
         }   
     }
     
+    function try_fourth(time,height,width,ground,points,general_row,general_col,playerIndex){
+                
+    }
+
     // Patch the city and map diffs into our local variables.
     cities = patch(cities, data.cities_diff);
     map = patch(map, data.map_diff);
@@ -400,7 +418,7 @@ socket.on('game_update', function(data) {
         try_third(time,height,width,ground,points,general_row,general_col,playerIndex);
     }else
     if(fourth){
-
+        try_fourth(time,height,width,ground,points,general_row,general_col,playerIndex);
     }        
 });
 
